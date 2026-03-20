@@ -183,6 +183,7 @@
     </style>
     <script>
         var debug = false;
+        var isLoadingSample = false;
 
         function onPageLoad() {
             if (typeof (Storage) !== "undefined") {
@@ -200,6 +201,7 @@
                     }
                 }
             }
+            onGainChange();
         }
 
         var AudioContext = AudioContext || webkitAudioContext,
@@ -239,8 +241,12 @@
         function onClickPlay() {
             if (debug) console.log("Inside onClickPlay")
             var button = document.getElementById("PlayStop");
+            var status = document.getElementById("tamburaStatus");
 
             if (button.innerText == "Play") {
+                if (isLoadingSample) {
+                    return;
+                }
                 if (context == null) {
                     context = new AudioContext();
                     gainNode = context.createGain();
@@ -254,6 +260,13 @@
                 request.open('GET', madhyamSruthi + pitchSelected + ".wav", true);
                 request.responseType = 'arraybuffer';
 
+                isLoadingSample = true;
+                button.disabled = true;
+                button.innerText = "Loading...";
+                if (status != null) {
+                    status.innerText = "Loading sample...";
+                }
+
                 request.addEventListener('load', function () {
                     context.decodeAudioData(
                         request.response,
@@ -261,22 +274,44 @@
                             if (debug) console.log("Got sample. Size ", buffer.length);
                             audioBuffer = buffer;
                             resetSound();
+                            isLoadingSample = false;
+                            button.disabled = false;
+                            button.innerText = "Stop";
+                            if (status != null) {
+                                status.innerText = "Playing";
+                            }
                         },
                         function (e) {
                             console.error('ERROR: context.decodeAudioData:', e);
+                            isLoadingSample = false;
+                            button.disabled = false;
+                            button.innerText = "Play";
+                            if (status != null) {
+                                status.innerText = "Could not decode sample";
+                            }
                         }
                     );
                 });
 
-                request.send();
+                request.onerror = function () {
+                    isLoadingSample = false;
+                    button.disabled = false;
+                    button.innerText = "Play";
+                    if (status != null) {
+                        status.innerText = "Sample file not found";
+                    }
+                };
 
-                button.innerText = "Stop"
+                request.send();
             } else {
                 if (sourceNode != null) {
                     sourceNode.stop(0);
                     sourceNode = null;
                 }
                 button.innerText = "Play"
+                if (status != null) {
+                    status.innerText = "Stopped";
+                }
             }
         }
         function onGainChange() {
@@ -402,6 +437,7 @@
 
         <center>
             <p><button class="w3-button w3-green" id="PlayStop" onclick="onClickPlay()">Play</button></p>
+            <p id="tamburaStatus" style="color:#555; font-size: 14px;">Ready</p>
         </center>
     </div>
 
