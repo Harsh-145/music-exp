@@ -172,6 +172,47 @@
         .toggle.round:before {
             border-radius: 50%;
         }
+
+        /* Navigation Bar Styles */
+        .nav-bar {
+            background-color: #008080;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-bar h4 {
+            color: white;
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .nav-links a.active {
+            background-color: #ffc107;
+            color: #333;
+        }
     </style>
     <title>Web Harmonium - developed by Rajaraman Iyer</title>
     <script>
@@ -626,6 +667,16 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <h4>🎶 Music Instruments Suite</h4>
+        <div class="nav-links">
+            <a href="webharmonium.html" class="active">🎹 Harmonium</a>
+            <a href="webflute.html">🪈 Flute</a>
+            <a href="webtambura.html">🎵 Tambura</a>
+        </div>
+    </div>
+
     <div class="w3-container w3-teal">
         <h3>Web Harmonium</h3>
     </div>
