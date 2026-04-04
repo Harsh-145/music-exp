@@ -3,6 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Loop Player - Practice musical loops from various ragas and styles for Indian classical music">
+    <meta name="author" content="harṣa">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Loop Player</title>
@@ -22,7 +24,13 @@
         body,
         select,
         button {
-            font-size: 4vh
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            body, select, button {
+                font-size: 1rem;
+            }
         }
 
         .slidecontainer {

@@ -3,6 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Tambura - Generate authentic Indian tambura drone sounds for musical practice. Adjust pitch and volume for your raga practice sessions.">
+    <meta name="author" content="harṣa">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Web Tambura</title>
     <style>
@@ -18,17 +20,18 @@
             appearance: none;
             width: 100%;
             /* Full-width */
-            height: 25px;
+            height: 8px;
             /* Specified height */
-            background: #d3d3d3;
+            background: linear-gradient(90deg, #667eea, #764ba2);
             /* Grey background */
             outline: none;
             /* Remove outline */
-            opacity: 0.7;
+            opacity: 0.8;
             /* Set transparency (for mouse-over effects on hover) */
-            -webkit-transition: .2s;
-            /* 0.2 seconds transition on hover */
-            transition: opacity .2s;
+            -webkit-transition: 0.3s opacity;
+            /* 0.3 seconds transition on hover */
+            transition: opacity 0.3s;
+            border-radius: 5px;
         }
 
         /* Mouse-over effects */
@@ -42,25 +45,42 @@
             -webkit-appearance: none;
             /* Override default look */
             appearance: none;
-            width: 25px;
+            width: 20px;
             /* Set a specific slider handle width */
-            height: 25px;
+            height: 20px;
             /* Slider handle height */
-            background: #4CAF50;
+            background: white;
             /* Green background */
             cursor: pointer;
             /* Cursor on hover */
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
         }
 
         .slider::-moz-range-thumb {
-            width: 25px;
+            width: 20px;
             /* Set a specific slider handle width */
-            height: 25px;
+            height: 20px;
             /* Slider handle height */
-            background: #4CAF50;
+            background: white;
             /* Green background */
             cursor: pointer;
             /* Cursor on hover */
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
         }
 
         /* *******************Check Box****************** */
@@ -142,18 +162,31 @@
 
         /* Navigation Bar Styles */
         .nav-bar {
-            background-color: #008080;
+            background: linear-gradient(135deg, #008080 0%, #006666 100%);
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .nav-bar h4 {
             color: white;
             margin: 0;
             font-size: 18px;
+            font-weight: 600;
         }
 
         .nav-links {
@@ -166,14 +199,38 @@
             color: white;
             text-decoration: none;
             padding: 8px 16px;
-            border-radius: 4px;
-            transition: all 0.3s;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: bold;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255,255,255,0.5);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
 
         .nav-links a:hover {
-            background-color: rgba(255,255,255,0.2);
-            transform: scale(1.05);
+            background-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #333;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
         }
 
         .nav-links a.active {

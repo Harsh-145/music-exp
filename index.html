@@ -1,32 +1,498 @@
 <!DOCTYPE html>
 <html>
-<title>Rajaraman Iyer's Web tools</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<style>
-    a {
-        text-decoration: none;
-    }
-</style>
+<head>
+    <title>har\u1e63a's Web Tools - Indian Classical Music Instruments & Utilities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive web-based musical instruments (Harmonium, Flute, Tambura) and spiritual learning tools for Indian classical music.">
+    <meta name="author" content="har\u1e63a">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            animation: slideInLeft 0.8s ease-out 0.4s both;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+        
+        .category-section {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            font-size: 1.8em;
+            color: white;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .category-icon {
+            font-size: 1.3em;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .tool-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.5s ease;
+        }
+
+        .tool-card:hover::after {
+            left: 100%;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: height 0.3s ease;
+        }
+
+        .tool-card:hover::before {
+            height: 6px;
+        }
+        
+        .tool-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .tool-card:hover h3 {
+            color: #667eea;
+        }
+        
+        .tool-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+            margin-bottom: 12px;
+        }
+        
+        .tool-card .hint {
+            font-size: 0.85em;
+            color: #999;
+            font-style: italic;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover .hint {
+            color: #667eea;
+            border-top-color: #667eea;
+        }
+        
+        .getting-started {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease-out;
+            border-left: 6px solid #667eea;
+        }
+        
+        .getting-started h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            animation: slideInLeft 0.6s ease-out 0.1s both;
+        }
+        
+        .getting-started ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .getting-started li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            color: #555;
+            animation: fadeInUp 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        }
+
+        .getting-started li:nth-child(1) { animation-delay: 0.1s; }
+        .getting-started li:nth-child(2) { animation-delay: 0.2s; }
+        .getting-started li:nth-child(3) { animation-delay: 0.3s; }
+        .getting-started li:nth-child(4) { animation-delay: 0.4s; }
+
+        .getting-started li:hover {
+            padding-left: 40px;
+            color: #667eea;
+        }
+        }
+        
+        .getting-started li:before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            animation: fadeInUp 0.6s ease-out;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .footer:hover {
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .category-title {
+                font-size: 1.4em;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .tool-card {
+                animation: scaleIn 0.3s ease-out;
+            }
+        }
+        
+        a.tool-card {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Stagger animations for cards */
+        .tool-card:nth-child(1) { animation-delay: 0.1s; }
+        .tool-card:nth-child(2) { animation-delay: 0.2s; }
+        .tool-card:nth-child(3) { animation-delay: 0.3s; }
+        .tool-card:nth-child(4) { animation-delay: 0.4s; }
+        .tool-card:nth-child(5) { animation-delay: 0.5s; }
+        .tool-card:nth-child(6) { animation-delay: 0.6s; }
+        .tool-card:nth-child(n+7) { animation-delay: 0.7s; }
+    </style>
+</head>
 <body>
 
-    <div class="w3-container">
-        <h2>Rajaraman Iyer's Web tools</h2>
-        <p>Contribution by Harsh on Flute with the combination of Harmonium, Flute, and Tambura.</p>
+    <div class="header">
+        <h1>🎵 har\u1e63a's Web Tools</h1>
+        <p>Interactive Musical Instruments & Learning Utilities</p>
+    </div>
 
-        <ul class="w3-ul w3-card w3-xlarge">
-            <li><a class="ui-btn" href="webharmonium.html">Web Harmonium</a></li>
-            <li><a class="ui-btn" href="webflute.html">Web Flute</a></li>
-            <li><a class="ui-btn" href="webtambura.html">Web Tambura</a></li>
-            <li><a class="ui-btn" href="exercisetimer.html">Exercise Timer</a></li>
-            <li><a class="ui-btn" href="DateTimeZone.html">Date Time and TimeZone</a></li>
-            <li><a class="ui-btn" href="vishnu_namam.html">Vishnu Sahasra Namam (Archanai)</a></li>
-            <li><a class="ui-btn" href="vishnu-sahasra-namam.html">Vishnu Sahasra Namam (Parayanam)</a></li>
-            <li><a class="ui-btn" href="parayanam.html">Parayanam Tracker</a></li>
-            <li><a class="ui-btn" href="loops.html">Loop Player</a></li>
-            <li><a class="ui-btn" href="nama_sheet.html">Nama Writing Sheet</a></li>
-        </ul>
-        <br>
+    <div class="container">
+        
+        <!-- Getting Started Section -->
+        <div class="getting-started">
+            <h2>🎯 Getting Started</h2>
+            <ul>
+                <li><strong>Musical Instruments:</strong> Click any instrument below, then use your keyboard or MIDI device to play. Press '?' or look for the help button for keyboard shortcuts.</li>
+                <li><strong>Practice Tools:</strong> Use these utilities to enhance your musical practice. Each tool has its own features and controls.</li>
+                <li><strong>Content Trackers:</strong> Tools for tracking spiritual and educational content like scripts and mantras.</li>
+                <li><strong>Utilities:</strong> Handy tools for scheduling, time zones, and display widgets.</li>
+            </ul>
+        </div>
+
+        <!-- Musical Instruments Section -->
+        <div class="category-section">
+            <div class="category-title">
+                <span class="category-icon">🎹</span>
+                Musical Instruments
+            </div>
+            <div class="cards-grid">
+                <a href="webharmonium.html" class="tool-card">
+                    <h3>Web Harmonium</h3>
+                    <p>Play an interactive 3-octave harmonium using your keyboard or MIDI device. Features octave shifting, note stacking, and reverb effects.</p>
+                    <div class="hint">💡 Tip: Use Q-P keys to play notes; Z/X to shift octaves</div>
+                </a>
+                <a href="webflute.html" class="tool-card">
+                    <h3>Web Flute</h3>
+                    <p>Play Indian classical flute with semitone transposition. Stack multiple notes for harmony and explore different ragas.</p>
+                    <div class="hint">💡 Tip: Keyboard shortcuts available; MIDI device supported</div>
+                </a>
+                <a href="webtambura.html" class="tool-card">
+                    <h3>Web Tambura</h3>
+                    <p>Generate authentic tambura drone sounds. Adjust pitch and volume to create the perfect background for your practice.</p>
+                    <div class="hint">💡 Tip: Loop-based drone generation for continuous support</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Practice Tools Section -->
+        <div class="category-section">
+            <div class="category-title">
+                <span class="category-icon">⏱️</span>
+                Practice Tools
+            </div>
+            <div class="cards-grid">
+                <a href="exercisetimer.html" class="tool-card">
+                    <h3>Exercise Timer</h3>
+                    <p>Time your musical practice sessions or exercise routines. Simple, focused timer to keep you on track.</p>
+                    <div class="hint">💡 Tip: Perfect for structured practice routines</div>
+                </a>
+                <a href="loops.html" class="tool-card">
+                    <h3>Loop Player</h3>
+                    <p>Play musical loops from various ragas and styles. Upload or select loops to practice along with backing tracks.</p>
+                    <div class="hint">💡 Tip: Great for exploring different raga styles</div>
+                </a>
+                <a href="nama_sheet.html" class="tool-card">
+                    <h3>Nama Writing Sheet</h3>
+                    <p>Write and practice names using musical notation. Track your progress as you learn.</p>
+                    <div class="hint">💡 Tip: Useful for notation learners</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Content Trackers Section -->
+        <div class="category-section">
+            <div class="category-title">
+                <span class="category-icon">📚</span>
+                Content Trackers & Spiritual Tools
+            </div>
+            <div class="cards-grid">
+                <a href="vishnu_namam.html" class="tool-card">
+                    <h3>Vishnu Sahasra Namam - Archanai</h3>
+                    <p>Track your archana (ritual worship) with Vishnu Sahasra Namam. Keep count of your spiritual practice.</p>
+                    <div class="hint">💡 Tip: Perfect for daily spiritual routines</div>
+                </a>
+                <a href="vishnu-sahasra-namam.html" class="tool-card">
+                    <h3>Vishnu Sahasra Namam - Parayanam</h3>
+                    <p>Track your parayanam (continuous recitation) progress. Monitor your spiritual learning journey.</p>
+                    <div class="hint">💡 Tip: Track your cumulative chanting progress</div>
+                </a>
+                <a href="ramayanam.html" class="tool-card">
+                    <h3>Ramayanam Tracker</h3>
+                    <p>Follow and track the Ramayana epic. Engage with important chapters and verses.</p>
+                    <div class="hint">💡 Tip: Explore one of the great epics</div>
+                </a>
+                <a href="bhagavatham.html" class="tool-card">
+                    <h3>Bhagavatham Tracker</h3>
+                    <p>Explore the Bhagavatham sacred text. Track your reading or chanting progress.</p>
+                    <div class="hint">💡 Tip: Deep dive into spiritual knowledge</div>
+                </a>
+                <a href="parayanam.html" class="tool-card">
+                    <h3>Parayanam Tracker</h3>
+                    <p>General parayanam tracking tool for any text or mantra you wish to chant continuously.</p>
+                    <div class="hint">💡 Tip: Tracks cumulative chanting over time</div>
+                </a>
+                <a href="gayatri-japam-counter.html" class="tool-card">
+                    <h3>Gayatri Japam Counter</h3>
+                    <p>Count your Gayatri mantra recitations. Track daily and total counts for your spiritual practice.</p>
+                    <div class="hint">💡 Tip: Simple counter for mantra practice</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Utilities Section -->
+        <div class="category-section">
+            <div class="category-title">
+                <span class="category-icon">🛠️</span>
+                Utilities & Utilities
+            </div>
+            <div class="cards-grid">
+                <a href="DateTimeZone.html" class="tool-card">
+                    <h3>Date Time Zone Converter</h3>
+                    <p>Convert times between different timezones. Schedule calls and meetings across the globe effortlessly.</p>
+                    <div class="hint">💡 Tip: Great for international coordination</div>
+                </a>
+                <a href="marquee_widget.html" class="tool-card">
+                    <h3>Marquee Display Widget</h3>
+                    <p>Create scrolling text displays. Customize colors and messages for information boards.</p>
+                    <div class="hint">💡 Tip: Great for announcements and displays</div>
+                </a>
+                <a href="text_widget.html" class="tool-card">
+                    <h3>Text Display Widget</h3>
+                    <p>Display formatted text. Easily customize appearance and layout.</p>
+                    <div class="hint">💡 Tip: Ideal for information displays</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Special Events Section -->
+        <div class="category-section">
+            <div class="category-title">
+                <span class="category-icon">✨</span>
+                Special Events
+            </div>
+            <div class="cards-grid">
+                <a href="wishes.html" class="tool-card">
+                    <h3>Birthday & Event Calendar</h3>
+                    <p>Track birthdays, anniversaries, and special occasions. Never miss an important celebration.</p>
+                    <div class="hint">💡 Tip: Automatic daily reminders for events</div>
+                </a>
+                <a href="yr-anna-program.html" class="tool-card">
+                    <h3>Program Schedule</h3>
+                    <p>View upcoming programs and events. Stay updated with dates and details.</p>
+                    <div class="hint">💡 Tip: Check for upcoming activities</div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>Created by har\u1e63a | All tools designed for Indian classical music learning and spiritual practice</p>
     </div>
 
 </body>

@@ -1,13 +1,38 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Marquee Display Widget - Create scrolling text displays with customizable colors and messages.">
+    <meta name="author" content="harṣa">
+    <title>Marquee Widget</title>
     <style>
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
         .mymarquee {
-            background-color: rgb(0, 132, 255);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 80vh;
             vertical-align: middle;
+            height: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 20px 0;
+            animation: scroll-left 15s linear infinite;
+            display: flex;
+            align-items: center;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
             height: 100%;
         }
     </style>
@@ -59,7 +84,7 @@
 </head>
 
 <body onload="onpageload()" style="margin: 0; padding: 0">
-    <marquee id="mymarquee" class="mymarquee" scrollamount="10"></marquee>
+    <div id="mymarquee" class="mymarquee"></div>
 </body>
 
 </html>

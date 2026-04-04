@@ -4,6 +4,8 @@
 <head>
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Play interactive Web Flute with semitone transposition and harmony stacking. Use your keyboard or MIDI device for Indian classical flute practice.">
+    <meta name="author" content="harṣa">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta property="og:title" content="Web Flute" />
@@ -161,18 +163,31 @@
 
         /* Navigation Bar Styles */
         .nav-bar {
-            background-color: #008080;
+            background: linear-gradient(135deg, #008080 0%, #006666 100%);
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .nav-bar h4 {
             color: white;
             margin: 0;
             font-size: 18px;
+            font-weight: 600;
         }
 
         .nav-links {
@@ -185,23 +200,92 @@
             color: white;
             text-decoration: none;
             padding: 8px 16px;
-            border-radius: 4px;
-            transition: all 0.3s;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: bold;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255,255,255,0.5);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
 
         .nav-links a:hover {
-            background-color: rgba(255,255,255,0.2);
-            transform: scale(1.05);
+            background-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::before {
+            transform: scaleX(1);
         }
 
         .nav-links a.active {
-            background-color: #ffc107;
+            background: linear-gradient(135deg, #ffc107, #ff9800);
             color: #333;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Enhanced Slider Styling */
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            outline: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            border-radius: 5px;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
         }
     </style>
 
-    <title>Web Flute - Developed by Rajaraman Iyer</title>
+    <title>Web Flute - Developed by harṣa</title>
     <script>
         // FLUTE AUDIO SAMPLE - Replace 'flute-sample.wav' with your downloaded flute sample
         // Recommended: Find a clear, single-note flute sample (0.5-2 seconds long)
@@ -682,6 +766,7 @@
             <a href="webharmonium.html">🎹 Harmonium</a>
             <a href="webflute.html" class="active">🪈 Flute</a>
             <a href="webtambura.html">🎵 Tambura</a>
+            <a href="#" onclick="toggleKeyboardGuide(); return false;" style="float:right; cursor:pointer;" title="Show keyboard shortcuts">❓ Help</a>
         </div>
     </div>
 
@@ -689,11 +774,41 @@
         <h3>Web Flute</h3>
     </div>
 
-    <div id="load" class="w3-container w3-panel">
-        <button class="w3-button w3-block w3-blue-gray" onclick="document.getElementById('load').style.display='none'; load();">Load Module</button>
+    <!-- Keyboard Guide Modal -->
+    <div id="keyboardGuideModal" class="w3-modal" style="display:none">
+        <div class="w3-modal-content w3-animate-zoom" style="max-width:600px; max-height:80vh; overflow-y:auto">
+            <div class="w3-container w3-purple">
+                <span onclick="toggleKeyboardGuide()" class="w3-button w3-right w3-large" style="cursor:pointer">&times;</span>
+                <h3>⌨️ Keyboard Shortcuts & Guide</h3>
+            </div>
+            <div class="w3-container w3-padding">
+                <h4>🪈 Playing Notes</h4>
+                <p><strong>Bottom row (white keys):</strong> <code>` q w e r t y u i o p [ ]</code></p>
+                <p><strong>Top row (black keys):</strong> <code>1 2 4 5 7 8 9</code></p>
+                <p>Click keys with mouse, press keyboard keys, or connect your MIDI device to play.</p>
+                
+                <h4>🎛️ Control Keys</h4>
+                <table class="w3-table w3-bordered" style="width:100%">
+                    <tr><td><strong>Z</strong></td><td>Lower octave</td></tr>
+                    <tr><td><strong>X</strong></td><td>Raise octave</td></tr>
+                    <tr><td><strong>S</strong></td><td>Reduce harmony stack</td></tr>
+                    <tr><td><strong>A</strong></td><td>Add harmony stack</td></tr>
+                </table>
+
+                <h4>💡 Tips</h4>
+                <ul>
+                    <li><strong>Harmony Stack</strong> creates chord effects with multiple notes</li>
+                    <li><strong>Transpose</strong> shifts all notes up/down by semitones</li>
+                    <li><strong>Octave</strong> changes the pitch range</li>
+                    <li><strong>Loop Mode</strong> - enable for sustained notes, disable for cleaner attack</li>
+                    <li><strong>Reverb</strong> adds spacious ambience to your playing</li>
+                    <li>Your settings are automatically saved!</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div id="mainScreen" style="display: none;">
+    <div id="mainScreen">
         <div class="w3-container">
             <h4>🎵 Volume: <span id="volumeLevel">30%</span></h4>
             <div class="slidecontainer">
@@ -798,6 +913,33 @@
             </center>
         </div>
     </div>
+
+    <script>
+        // Auto-load the module on page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                load();
+            }, 100);
+        });
+
+        // Toggle keyboard guide modal
+        function toggleKeyboardGuide() {
+            var modal = document.getElementById('keyboardGuideModal');
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                modal.style.display = 'block';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('keyboardGuideModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 
 </body>
 
